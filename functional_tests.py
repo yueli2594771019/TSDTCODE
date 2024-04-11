@@ -24,20 +24,14 @@ class NewVisitorTest(unittest.TestCase):
 
         # 应用有一个输入代办事项的文本输入框
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
-        self.assertEqual(
-            inputbox.get_attribute('placeholder'),
-            'Enter a to-do item'
-            )
-        
-        # 他在文本输入框里输入了“Buy flowers"
-        inputbox.send_keys('Buy flowers')
-        
+        inputbox.send_keys('Give a gift to Lisi')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
-
+        
         table = self.browser.find_element(By.ID,'id_list_table')
         rows=table.find_elements(By.TAG_NAME,'tr')
-        self.assertIn('1:Buy flowers',[row.text for row in rows])
+        self.assertIn('1: Buy flowers',[row.text for row in rows])
+        self.assertIn('2: Give a gift to List',[row.text for row in rows])
         
         self.fail('Finish the test!')
 
