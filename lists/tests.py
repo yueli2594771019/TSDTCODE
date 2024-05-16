@@ -6,10 +6,7 @@ from django.template.loader import render_to_string
 from lists.models import Item
 
 class ItemModelTest(TestCase):
-    def test_uses_home_template(self):
-        response = self.client.get('/')
-        self.assertTemplateUsed(response, 'home.html')
-
+    
     def test_can_save_a_POST_request(self):
         response = self.client.post('/',data={'item_text': 'A new list item'})
 
@@ -18,9 +15,9 @@ class ItemModelTest(TestCase):
         self.assertEqual(new_item.text, 'A new list item')
 
     def test_redirects_after_POST(self):
-        response = self.client.post('/', data={'item_text':'A new list item'})
+        response = self.client.post('/', data={'item_text': 'A new list item'})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/the-new-page/')
 
     def test_only_saves_items_when_necessary(self):
         self.client.get('/')
@@ -44,13 +41,41 @@ class ItemModelTest(TestCase):
         self.assertEqual(second_saved_item.text, 'Item the second')
 
 class HomePageTest(TestCase):
-    def test_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
+    
+    def test_uses_home_template(self):
         response = self.client.get('/')
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())
+        self.assertTemplateUsed(response, 'home.html')
+
+class ListViewTest(TestCase):
+    
+    def test_displays_all_items(self):
+        response = self.client.get('/lists/the-new-page/')
+        self.assertTemplateUsed(response,'list.html')
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         
         

@@ -3,11 +3,11 @@ from selenium.webdriver.common.keys import Keys
 import time
 from selenium.webdriver.common.by import By
 from django.test import LiveServerTestCase
+from selenium.common.exceptions import WebDriverException
 
 MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
-
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -77,9 +77,9 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser = webdriver.Chrome()
 
         #王五访问首页 页面中看不到张三的清单
-        self.borwser.get(self.live_server_url)
+        self.browser.get(self.live_server_url)
         page_text = self.browser.find_element(By.TAG_NAME,'body').text
-        self.assertNotIn('But flowers', page_text)
+        self.assertNotIn('Buy flowers', page_text)
         self.assertNotIn('Give a gift to Lisi', page_text)
 
         #王五输入一个新待办事项，新建一个清单
@@ -98,8 +98,6 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Buy flowers', page_text)
         self.assertIn('Buy milk', page_text)
         
-        
-
         #网站生成了一个唯一的URL
         self.fail('Finish the test!')
 
